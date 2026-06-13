@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Runtime artifacts
+logs/*
+!logs/.gitkeep
+output/*
+!output/.gitkeep
+checkpoints/*
+!checkpoints/.gitkeep
+
+# Data assets
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Vector store
+chroma_db/
+
+# Local env
+.env

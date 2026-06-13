@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/c130-dataset-pipeline/config.schema.json",
+  "title": "C130 Dataset Pipeline Config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["model", "database", "vlm", "document", "llm", "judge_llm", "dataset_gen"],
+  "properties": {
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["embeddings", "tokenizer"],
+      "properties": {
+        "embeddings": {"type": "string", "minLength": 1},
+        "tokenizer": {"type": "string", "minLength": 1}
+      }
+    },
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["persist_directory", "collection_name", "namespace", "chroma_device"],
+      "properties": {
+        "persist_directory": {"type": "string", "minLength": 1},
+        "collection_name": {"type": "string", "minLength": 1},
+        "namespace": {"type": ["string", "null"]},
+        "chroma_device": {"type": "string", "minLength": 1}
+      }
+    },
+    "vlm": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["url", "model_name"],
+      "properties": {
+        "url": {"type": "string", "pattern": "^https?://"},
+        "model_name": {"type": "string", "minLength": 1},
+        "prompt": {"type": "string"},
+        "timeout": {"type": "integer", "minimum": 1}
+      }
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_tokens", "supported_file_types", "image_resolution_scale"],
+      "properties": {
+        "max_tokens": {"type": "integer", "minimum": 1},
+        "supported_file_types": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 2},
+          "minItems": 1
+        },
+        "image_resolution_scale": {"type": "number", "minimum": 0.1}
+      }
+    },
+    "llm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "model_name", "temperature", "timeout"],
+      "properties": {
+        "url": {"type": "string", "pattern": "^https?://"},
+        "model_name": {"type": "string", "minLength": 1},
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "timeout": {"type": "integer", "minimum": 1}
+      }
+    },
+    "judge_llm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "model_name", "temperature", "timeout"],
+      "properties": {
+        "url": {"type": "string", "pattern": "^https?://"},
+        "model_name": {"type": "string", "minLength": 1},
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "timeout": {"type": "integer", "minimum": 1}
+      }
+    },
+    "dataset_gen": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "accepted_questions_path",
+        "output_jsonl",
+        "output_json",
+        "output_csv",
+        "doc_id",
+        "top_k_retrieval"
+      ],
+      "properties": {
+        "questions_per_chunk": {"type": "integer", "minimum": 1},
+        "min_qa_score": {"type": "integer", "minimum": 0},
+        "accepted_questions_path": {"type": "string", "minLength": 1},
+        "output_jsonl": {"type": "string", "minLength": 1},
+        "output_json": {"type": "string", "minLength": 1},
+        "output_csv": {"type": "string", "minLength": 1},
+        "output_dir": {"type": "string", "minLength": 1},
+        "dataset_name": {"type": "string", "minLength": 1},
+        "doc_id": {"type": "string", "minLength": 1},
+        "doc_ref": {"type": "string", "minLength": 1},
+        "doc_ref_map": {
+          "type": "object",
+          "propertyNames": {"type": "string", "minLength": 1},
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "top_k_retrieval": {"type": "integer", "minimum": 1},
+        "num_answer_candidates": {"type": "integer", "minimum": 2},
+        "judge_selection_margin": {"type": "integer", "minimum": 1},
+        "judge_min_rejected_score": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

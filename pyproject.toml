@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "offline-dataset-generator"
+version = "0.1.0"
+description = "Production-grade Offline dataset generator pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Offline dataset generator Pipeline Team" }
+]
+dependencies = [
+  "chromadb>=0.5.0",
+  "docling>=2.0.0",
+  "langchain-core>=0.3.0",
+  "langchain-docling>=0.2.0",
+  "langchain-huggingface>=0.1.0",
+  "langchain-openai>=0.3.0",
+  "langgraph>=0.3.0",
+  "python-dotenv>=1.0.0",
+  "pyyaml>=6.0",
+  "transformers>=4.45.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "black>=24.0.0",
+  "mypy>=1.10.0",
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.5.0"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

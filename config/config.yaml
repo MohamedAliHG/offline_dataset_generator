@@ -1,0 +1,48 @@
+model:
+  embeddings: "BAAI/bge-small-en-v1.5"
+  tokenizer: "BAAI/bge-small-en-v1.5"
+
+database:
+  persist_directory: "chroma_db_demo"
+  collection_name: "collection_demo"
+  namespace: "Demo"
+  chroma_device: "cpu"
+
+vlm:
+  url: "http://localhost:8080"
+  model_name: "qwen2-vl-7b-instruct"
+  timeout: 180
+
+document:
+  max_tokens: 450
+  supported_file_types: [".pdf"]
+  image_resolution_scale: 2
+
+llm:
+  url: "http://localhost:8081"
+  model_name: "Meta-Llama-3.1-8B-Instruct-Q4_K_M"
+  temperature: 0.7
+  timeout: 180
+
+judge_llm:
+  url: "http://localhost:8081"
+  model_name: "Meta-Llama-3.1-8B-Instruct-Q4_K_M"
+  temperature: 0
+  timeout: 180
+
+dataset_gen:
+  questions_per_chunk: 5
+  min_qa_score: 3
+  accepted_questions_path: "output/demo_questions.jsonl"
+  output_jsonl: "output/demo_dataset_pairs.jsonl"
+  output_json: "output/demo_dataset.json"
+  output_csv: "output/demo_dataset.csv"
+  output_dir: "output"
+  dataset_name: "demo_qa_dataset"
+  doc_id: "doc_001"
+  doc_ref_map:
+    doc_001: "TO 1C-130H-2-33FI-00-1-1-1"
+  top_k_retrieval: 3
+  num_answer_candidates: 4
+  judge_selection_margin: 3
+  judge_min_rejected_score: 8
