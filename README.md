@@ -5,7 +5,7 @@ Production-oriented pipeline for generating QA preference-pair datasets from Avi
 ## Architecture
 
 ```
-c130-dataset-pipeline/
+offline_dataset_generator/
 ├── config/
 ├── data/
 ├── output/
