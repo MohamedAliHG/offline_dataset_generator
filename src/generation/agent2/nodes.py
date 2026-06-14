@@ -58,7 +58,6 @@ def _format_candidates(candidates: List[Dict]) -> str:
             "\n".join(
                 [
                     f"candidate_id: {candidate['candidate_id']}",
-                    #f"variant: {candidate['variant_name']}",
                     candidate["text"],
                 ]
             )
@@ -207,49 +206,10 @@ def make_nodes(gen_llm: ChatOpenAI, judge_llm: ChatOpenAI, store: ChromaStore) -
 
         context = _format_context(chunks)
         page_ref = _extract_page_ref(chunks)
-        #variants = _get_candidate_variants(state.get("num_candidates", 4))
 
         candidates: List[Dict] = []
         seen_texts = set()
-        """
-        for variant in variants:
-            response = gen_llm.invoke(
-                [
-                    SystemMessage(
-                        content=GEN_CANDIDATE_SYSTEM.format(
-                            doc_ref=doc_ref,
-                            page_ref=page_ref,
-                        )
-                    ),
-                    HumanMessage(
-                        content=GEN_CANDIDATE_HUMAN.format(
-                            question=question["question"],
-                            difficulty=question.get("difficulty", "basic"),
-                            domain=question.get("domain", "aircraft_systems"),
-                            variant_name=variant["name"],
-                            variant_instruction=variant["instruction"],
-                            context=context,
-                            doc_ref=doc_ref,
-                            page_ref=page_ref,
-                        )
-                    ),
-                ]
-            )
-            text = _strip_meta_commentary((getattr(response, "content", "") or "").strip())
-            if not text:
-                continue
-            normalized = text.lower()
-            if normalized in seen_texts:
-                continue
-            seen_texts.add(normalized)
-            candidates.append(
-                {
-                    "candidate_id": variant["candidate_id"],
-                    "variant_name": variant["name"],
-                    "text": text,
-                }
-            )
-        """
+        
 
         for i in  range(state.get("num_candidates", 4)):
             response = gen_llm.invoke(
@@ -265,8 +225,6 @@ def make_nodes(gen_llm: ChatOpenAI, judge_llm: ChatOpenAI, store: ChromaStore) -
                             question=question["question"],
                             difficulty=question.get("difficulty", "basic"),
                             domain=question.get("domain", "aircraft_systems"),
-                            #variant_name=variant["name"],
-                            #variant_instruction=variant["instruction"],
                             context=context,
                             doc_ref=doc_ref,
                             page_ref=page_ref,
@@ -284,7 +242,6 @@ def make_nodes(gen_llm: ChatOpenAI, judge_llm: ChatOpenAI, store: ChromaStore) -
             candidates.append(
                 {
                     "candidate_id": f"cand_{i + 1}",
-                    #"variant_name": variant["name"],
                     "text": text,
                 }
             )
@@ -335,7 +292,6 @@ def make_nodes(gen_llm: ChatOpenAI, judge_llm: ChatOpenAI, store: ChromaStore) -
         logger.info("[A2] judge_candidates: ranked %s candidate(s)", len(judged))
         for item in judged:
             logger.info(
-                #"[A2] candidate %s variant=%s total=%s fact=%s comp=%s trace=%s fit=%s preview=%s",
                 "[A2] candidate %s total=%s fact=%s comp=%s trace=%s fit=%s",
                 item["candidate_id"],
                 item.get("total_score", 0),
@@ -343,7 +299,6 @@ def make_nodes(gen_llm: ChatOpenAI, judge_llm: ChatOpenAI, store: ChromaStore) -
                 item.get("completeness", 0),
                 item.get("traceability", 0),
                 item.get("document_fit", 0),
-                # _preview_text(item.get("text", "")),
             )
         return {"judged_candidates": judged}
 

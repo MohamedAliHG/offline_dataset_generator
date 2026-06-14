@@ -4,53 +4,7 @@ import json
 import re
 from typing import Dict, List
 
-"""
-CANDIDATE_PROMPT_VARIANTS: List[Dict[str, str]] = [
-    {
-        "name": "strict_grounded",
-        "instruction": (
-            "Prioritize exact factual grounding and concise coverage. Include only details that are "
-            "explicitly supported by the retrieved chunks."
-        ),
-    },
-    {
-        "name": "procedural_focus",
-        "instruction": (
-            "If the question involves a process, make the sequence of steps and conditions explicit. "
-            "Keep the answer operational and source-grounded."
-        ),
-    },
-    {
-        "name": "cross_reference_focus",
-        "instruction": (
-            "Pay close attention to relationships across the retrieved chunks, including tables, notes, "
-            "and any linked textual or visual references."
-        ),
-    },
-    {
-        "name": "constraint_focus",
-        "instruction": (
-            "Highlight thresholds, exceptions, prerequisites, and edge conditions whenever they are "
-            "present in the retrieved chunks."
-        ),
-    },
-]"""
 
-"""
-def _get_candidate_variants(num_candidates: int) -> List[Dict[str, str]]:
-    Return a stable list of prompt variants sized for the requested candidate count
-    total = max(2, num_candidates)
-    return [
-        {
-            "candidate_id": f"cand_{index + 1}",
-            "name": CANDIDATE_PROMPT_VARIANTS[index % len(CANDIDATE_PROMPT_VARIANTS)]["name"],
-            "instruction": CANDIDATE_PROMPT_VARIANTS[index % len(CANDIDATE_PROMPT_VARIANTS)][
-                "instruction"
-            ],
-        }
-        for index in range(total)
-    ]
-"""
 
 def _parse_judge_payload(text: str) -> List[Dict]:
     """Parse judge JSON output into ranked candidate metadata."""
